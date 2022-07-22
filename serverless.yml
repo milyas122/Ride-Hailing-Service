@@ -42,6 +42,7 @@ functions:
       - http:
           path: trip/fare
           method: get
+          cors: True
 
   CreateTrip:
     handler: src/api/create_trip.lambda_handler
@@ -65,6 +66,31 @@ functions:
       - http:
           path: trip/create
           method: post
+          cors: True
+  
+  CompleteTrip:
+    handler: src/api/complete_trip.lambda_handler
+    layers:
+      - Ref: PythonRequirementsLambdaLayer
+    environment:
+      TRIP_TABLE: ${self:custom.settings.TRIP_DYNAMODB_TABLE} 
+    package:
+      patterns: ## files to be included in lambda (Each lambda will have common files + it own handler + other file in its folder)
+        - ./src/api/complete_trip.py
+    iamRoleStatementsName: CompleteTrip-policy-sls-${self:provider.region}-${self:provider.stage}
+    iamRoleStatements:
+        - Effect: "Allow"
+          Action:
+            - dynamodb:UpdateItem
+            - dynamodb:GetItem
+          Resource:
+            - !GetAtt tripTable.Arn
+              # - !Sub arn:aws:dynamodb:${self:provider.region}:${AWS::AccountId}:table/${self:custom.settings.TRIP_DYNAMODB_TABLE}/index/status-date-index
+    events:
+      - http:
+          path: trip/{tripId}/complete
+          method: post
+          cors: True
 
 # AWS Resources
 resources:
