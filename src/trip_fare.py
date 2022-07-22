@@ -5,8 +5,9 @@ import os
 def lambda_handler(event, context):
     try:
         api_key = os.environ["API_KEY"]
-        # api_key = "AIzaSyAm802xgN0Ys6XQAN-5eV4A4Tudff1CQ_I"
 
+        # For demo purposes we use hardcoded trip_fare.
+        # But in poroduction trip_fare actually get from database
         per_hunder_meter_fare: float = 2.0 # per 1000meter/1km fare
         per_meter_fare: float = per_hunder_meter_fare/1000 # per 1 meter fare
 
