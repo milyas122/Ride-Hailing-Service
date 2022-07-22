@@ -40,7 +40,8 @@ def lambda_handler(event, context):
                 "origin": origin,
                 "total_duration": duration,
                 "total_distance_traveled":total_distance,
-                "total_fare": total_fare
+                "total_fare": total_fare,
+                "status":"pending"
             }
         )
 
@@ -49,8 +50,6 @@ def lambda_handler(event, context):
     except ClientError as e:
         return get_custom_error(status_code=500, message='Server Error', data={"message":e.response['Error']})
 
-    except ValueError as e:
-        return get_custom_error(status_code=400, message='Bad Request', data={"message":str(e)})
        
 
 

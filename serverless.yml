@@ -76,9 +76,23 @@ resources:
         AttributeDefinitions:
           - AttributeName: "Pk"
             AttributeType: "S"
+          - AttributeName: "status"
+            AttributeType: "S"
+          - AttributeName: "created_at"
+            AttributeType: "S"
         KeySchema: 
           - AttributeName: "Pk"
             KeyType: "HASH"
+        GlobalSecondaryIndexes:
+          - IndexName: status-date-index
+            KeySchema:
+              - AttributeName: status
+                KeyType: HASH
+              - AttributeName: created_at
+                KeyType: RANGE
+            Projection:
+              NonKeyAttributes: [ ]
+              ProjectionType: ALL
         BillingMode: "PAY_PER_REQUEST"
         Tags: 
           - Key: "Name"
