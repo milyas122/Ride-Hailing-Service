@@ -19,6 +19,7 @@ package:
   patterns:
     - '!./**'
     - '!node_modules/**'
+    - ./src/common/**
 
 custom:
   pythonRequirements:
@@ -28,27 +29,42 @@ custom:
 
 functions:
   TripFare:
-    handler: src/trip_fare.lambda_handler
+    handler: src/api/trip_fare.lambda_handler
     layers:
       - Ref: PythonRequirementsLambdaLayer
     environment:
       API_KEY: "AIzaSyAm802xgN0Ys6XQAN-5eV4A4Tudff1CQ_I"
     package:
       patterns: ## files to be included in lambda (Each lambda will have common files + it own handler + other file in its folder)
-        - ./src/trip_fare.py
+        - ./src/api/trip_fare.py
     iamRoleStatementsName: TripFare-policy-sls-${self:provider.region}-${self:provider.stage}
-    # iamRoleStatements:
-    #     - Effect: "Allow"
-    #       Action:
-    #         - dynamodb:Query
-    #         - dynamodb:PutItem
-    #         - dynamodb:UpdateItem
-    #       Resource:
-    #           - !GetAtt tripTable.Arn
     events:
       - http:
           path: trip/fare
           method: get
+
+  CreateTrip:
+    handler: src/api/create_trip.lambda_handler
+    layers:
+      - Ref: PythonRequirementsLambdaLayer
+    environment:
+      TRIP_TABLE: ${self:custom.settings.TRIP_DYNAMODB_TABLE} 
+    package:
+      patterns: ## files to be included in lambda (Each lambda will have common files + it own handler + other file in its folder)
+        - ./src/api/create_trip.py
+        - ./src/validations/create_trip.py
+
+    iamRoleStatementsName: CreateTrip-policy-sls-${self:provider.region}-${self:provider.stage}
+    iamRoleStatements:
+        - Effect: "Allow"
+          Action:
+            - dynamodb:PutItem
+          Resource:
+              - !GetAtt tripTable.Arn
+    events:
+      - http:
+          path: trip/create
+          method: post
 
 # AWS Resources
 resources:
