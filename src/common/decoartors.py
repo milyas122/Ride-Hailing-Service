@@ -12,7 +12,8 @@ def validate_body(Schema):
                 if 'body' in event and event['body'] is not None:
                     data = json.loads(event['body'])
                 else:
-                    return func(event, context)
+                    return response_builder.get_custom_error(status_code=400, message='Error',
+                                                     data={'message': "Provide request body"})
                 Schema.load(data)
                 return func(event, context)
             except ClientError as e:
