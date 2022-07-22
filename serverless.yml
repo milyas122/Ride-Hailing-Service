@@ -7,7 +7,7 @@ service: safeer-backend-hiring-project
 frameworkVersion: '3'
 plugins:
   - serverless-iam-roles-per-function
-
+  - serverless-python-requirements
 provider:
   name: aws
   runtime: python3.9
@@ -21,16 +21,18 @@ package:
     - '!node_modules/**'
 
 custom:
-  # pythonRequirements:
-  #    layer: true
+  pythonRequirements:
+     layer: true
   settings:
     TRIP_DYNAMODB_TABLE: Trips
 
 functions:
   TripFare:
     handler: src/trip_fare.lambda_handler
-    # layers:
-    #   - Ref: PythonRequirementsLambdaLayer
+    layers:
+      - Ref: PythonRequirementsLambdaLayer
+    environment:
+      API_KEY: "AIzaSyAm802xgN0Ys6XQAN-5eV4A4Tudff1CQ_I"
     package:
       patterns: ## files to be included in lambda (Each lambda will have common files + it own handler + other file in its folder)
         - ./src/trip_fare.py
