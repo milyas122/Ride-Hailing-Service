@@ -1,0 +1,67 @@
+# Welcome to Serverless!
+#
+# This file is the main config file for your service.
+# It's very minimal at this point and uses default values.
+service: safeer-backend-hiring-project
+
+frameworkVersion: '3'
+plugins:
+  - serverless-iam-roles-per-function
+
+provider:
+  name: aws
+  runtime: python3.9
+  stage: dev
+  region: us-east-1
+
+package:
+  individually: true
+  patterns:
+    - '!./**'
+    - '!node_modules/**'
+
+custom:
+  # pythonRequirements:
+  #    layer: true
+  settings:
+    TRIP_DYNAMODB_TABLE: Trips
+
+functions:
+  TripFare:
+    handler: src/trip_fare.lambda_handler
+    # layers:
+    #   - Ref: PythonRequirementsLambdaLayer
+    package:
+      patterns: ## files to be included in lambda (Each lambda will have common files + it own handler + other file in its folder)
+        - ./src/trip_fare.py
+    iamRoleStatementsName: TripFare-policy-sls-${self:provider.region}-${self:provider.stage}
+    # iamRoleStatements:
+    #     - Effect: "Allow"
+    #       Action:
+    #         - dynamodb:Query
+    #         - dynamodb:PutItem
+    #         - dynamodb:UpdateItem
+    #       Resource:
+    #           - !GetAtt tripTable.Arn
+    events:
+      - http:
+          path: trip/fare
+          method: get
+
+# AWS Resources
+resources:
+  Resources:
+    tripTable: # Trips Dynamodb Table
+      Type: "AWS::DynamoDB::Table"
+      Properties:
+        TableName: ${self:custom.settings.TRIP_DYNAMODB_TABLE} 
+        AttributeDefinitions:
+          - AttributeName: "Pk"
+            AttributeType: "S"
+        KeySchema: 
+          - AttributeName: "Pk"
+            KeyType: "HASH"
+        BillingMode: "PAY_PER_REQUEST"
+        Tags: 
+          - Key: "Name"
+            Value: ${self:custom.settings.TRIP_DYNAMODB_TABLE}
