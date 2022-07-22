@@ -56,7 +56,7 @@ def lambda_handler(event, context):
 
         return response
     except ValueError as e:
-        response = {
+        return {
             "statusCode": 400,
             "body": json.dumps({
                 'responseCode': 200,
