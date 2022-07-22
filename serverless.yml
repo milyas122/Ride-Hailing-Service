@@ -68,7 +68,7 @@ functions:
           method: post
           cors: True
   
-  CompleteTrip:
+  MarkTripComplete:
     handler: src/api/complete_trip.lambda_handler
     layers:
       - Ref: PythonRequirementsLambdaLayer
