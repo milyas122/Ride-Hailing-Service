@@ -64,7 +64,7 @@ functions:
 serverless deploy 
 ```
 
-## Once successfully deploy its time to test APIs, so follow below steps to achive this
+## After successful deployment its time to test APIs, so follow below steps to achive this
 
 1. Use this link to get APIs collection. 
    https://www.getpostman.com/collections/853aa642ec5ec96cfdc8
@@ -73,7 +73,7 @@ serverless deploy
 ---
 *NOTE*
 
-In Case, there is any issue in deploy or other, use these below APIs in Postman to rate my assignment.
+In Case, there is any issue in deployment, use these below APIs in Postman to rate my assignment.
  1. GET - https://mvfll0wvx5.execute-api.us-east-1.amazonaws.com/dev/trip/fare
  2. POST - https://mvfll0wvx5.execute-api.us-east-1.amazonaws.com/dev/trip/create
  3. POST - https://mvfll0wvx5.execute-api.us-east-1.amazonaws.com/dev/trip/{tripId}/complete
