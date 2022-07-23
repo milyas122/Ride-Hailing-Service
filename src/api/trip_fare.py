@@ -52,6 +52,7 @@ def lambda_handler(event, context):
     except ValueError as e:
         return get_custom_error(status_code=400, message="Bad Request", data={"message":str(e)})
         
-
+    except Exception as e:
+        return get_custom_error(status_code=400, message="Bad Request", data={"message":"Something went wrong, come back later"})
 
     

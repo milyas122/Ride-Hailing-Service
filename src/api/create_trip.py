@@ -2,10 +2,9 @@ import json
 import os 
 import boto3
 import uuid
-import pytz
-from datetime import datetime
 from botocore.exceptions import ClientError
 from ..validations.create_trip import CreateTripSchema
+from ..common import utils
 from ..common.decoartors import validate_body
 from ..common.response_builder import (
     get_success_response, get_custom_error
@@ -15,7 +14,6 @@ dynamodb = boto3.resource('dynamodb')
 TRIP_TABLE = os.environ['TRIP_TABLE'] # Table Name 
 trip_table = dynamodb.Table(TRIP_TABLE) # Dynamodb Table 
 
-tz_PAK = pytz.timezone('Asia/Karachi')
 
 @validate_body(CreateTripSchema())
 def lambda_handler(event, context):
@@ -28,8 +26,8 @@ def lambda_handler(event, context):
         duration = data["duration"]
         total_fare = data["total_fare"]
 
-        datetime_PAK = datetime.now(tz_PAK)
-        now = datetime_PAK.strftime("%Y-%m-%dT%H:%M:%S")
+        now = utils.utc_now
+        
         trip_id = str(uuid.uuid4())
         
         trip_table.put_item(
@@ -50,7 +48,8 @@ def lambda_handler(event, context):
     except ClientError as e:
         return get_custom_error(status_code=500, message='Server Error', data={"message":e.response['Error']})
 
-       
+    except Exception as e:
+        return get_custom_error(status_code=400, message="Bad Request", data={"message":"Something went wrong, come back later"})
 
 
     

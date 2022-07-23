@@ -5,9 +5,11 @@
 service: safeer-backend-hiring-project
 
 frameworkVersion: '3'
+
 plugins:
   - serverless-iam-roles-per-function
   - serverless-python-requirements
+
 provider:
   name: aws
   runtime: python3.9
@@ -33,7 +35,7 @@ functions:
     layers:
       - Ref: PythonRequirementsLambdaLayer
     environment:
-      API_KEY: "AIzaSyAm802xgN0Ys6XQAN-5eV4A4Tudff1CQ_I"
+      API_KEY: "AIzaSyAm802xgN0Ys6XQAN-5eV4A4Tudff1CQ_I" # Its for demo purpose, In real case all envrionment variables are in seperate file which is not a part of git repository
     package:
       patterns: ## files to be included in lambda (Each lambda will have common files + it own handler + other file in its folder)
         - ./src/api/trip_fare.py

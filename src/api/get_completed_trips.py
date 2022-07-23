@@ -24,12 +24,12 @@ def lambda_handler(event, context):
       
         return get_success_response(status_code=200, message='Success', data={"Items": trip_record})
 
+    
     except ClientError as e:
         return get_custom_error(status_code=500, message='Server Error', data={"message":e.response['Error']})
     
-    except ValueError as e:
-        return get_custom_error(status_code=400, message='Bad Request', data={"message":str(e)})
-       
+    except Exception as e:
+        return get_custom_error(status_code=400, message="Bad Request", data={"message":"Something went wrong, come back later"})
 
 
     
