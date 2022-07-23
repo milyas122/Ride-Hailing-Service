@@ -29,9 +29,7 @@ def lambda_handler(event, context):
         now = utils.utc_now
         
         trip_id = str(uuid.uuid4())
-        
-        trip_table.put_item(
-            Item = {
+        data = {
                 "Pk": trip_id,
                 "created_at": now,
                 "destination": destination,
@@ -41,9 +39,11 @@ def lambda_handler(event, context):
                 "total_fare": total_fare,
                 "status":"pending"
             }
+        trip_table.put_item(
+            Item = data
         )
 
-        return get_success_response(status_code=201, message='Success', data={"message": "Trip created successfully.."})
+        return get_success_response(status_code=201, message='Success', data={"message": "Trip created successfully..","data":data})
 
     except ClientError as e:
         return get_custom_error(status_code=500, message='Server Error', data={"message":e.response['Error']})
