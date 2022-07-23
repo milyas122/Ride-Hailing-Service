@@ -1,6 +1,8 @@
-import json
 import requests
 import os 
+from ..common.response_builder import (
+    get_success_response, get_custom_error
+)
 
 def lambda_handler(event, context):
     try:
@@ -45,25 +47,11 @@ def lambda_handler(event, context):
         else:
             raise ValueError("Something went wrong, come back later")
 
-        response = {
-            "statusCode": 200,
-            "body": json.dumps({
-                'responseCode': 200,
-                'message': "Success",
-                'response': data
-            })
-        }
-
-        return response
+        return get_success_response(status_code=200, message="Success", data=data)
+    
     except ValueError as e:
-        return {
-            "statusCode": 400,
-            "body": json.dumps({
-                'responseCode': 200,
-                'message': "Bad Request",
-                'response': {"message":str(e)}
-            })
-        }
+        return get_custom_error(status_code=400, message="Bad Request", data={"message":str(e)})
+        
 
 
     
