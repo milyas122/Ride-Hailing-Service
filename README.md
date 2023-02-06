@@ -70,13 +70,4 @@ serverless deploy
    https://www.getpostman.com/collections/853aa642ec5ec96cfdc8
 2. After this set **baseUrl** environment variable to your one.
   
----
-*NOTE*
 
-In Case, there is any issue in deployment, use these below APIs in Postman to rate my assignment.
- 1. GET - https://mvfll0wvx5.execute-api.us-east-1.amazonaws.com/dev/trip/fare
- 2. POST - https://mvfll0wvx5.execute-api.us-east-1.amazonaws.com/dev/trip/create
- 3. POST - https://mvfll0wvx5.execute-api.us-east-1.amazonaws.com/dev/trip/{tripId}/complete
- 4. GET - https://mvfll0wvx5.execute-api.us-east-1.amazonaws.com/dev/trips/complete
-
----
