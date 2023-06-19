@@ -1,4 +1,4 @@
-# Safeer Backend Hiring Project
+# Ride Hailing Service
 ## Installation
 - Click this link to download [Python](https://www.python.org/downloads/)
 - Download and install [Node Js](https://nodejs.org/en/)
